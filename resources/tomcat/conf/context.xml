@@ -16,26 +16,4 @@
   -->
 
 <Context>
-
-	<Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="1"
-		logAbandoned="true" logValidationErrors="true" maxActive="5" maxWait="10000"
-		minEvictableIdleTimeMillis="300000" minIdle="1" name="MobileLDBDataSourceRef"
-		password="AAC0M" removeAbandoned="true" removeAbandonedTimeout="300"
-		testOnBorrow="true" testOnReturn="false" testWhileIdle="true"
-		timeBetweenEvictionRunsMillis="60000" type="javax.sql.DataSource"
-		url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=aadalldbq200-vip)(PORT=1524))(ADDRESS=(PROTOCOL=TCP)(HOST=aadalldbq201-vip)(PORT=1524))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=aacom_web.service.AAWEBQS.aaqa)))"
-		username="LDB_QA12" validationInterval="30000" validationQuery="SELECT 1 FROM DUAL" />
-	
-
-	<Resource auth="Container" driverClassName="oracle.jdbc.OracleDriver"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" initialSize="1"
-		logAbandoned="true" logValidationErrors="true" maxActive="5" maxWait="10000"
-		minEvictableIdleTimeMillis="300000" minIdle="1" name="MobileDBLogDataSourceRef"
-		password="AAC0M" removeAbandoned="true" removeAbandonedTimeout="300"
-		testOnBorrow="true" testOnReturn="false" testWhileIdle="true"
-		timeBetweenEvictionRunsMillis="60000" type="javax.sql.DataSource"
-		url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=aadalldbq200-vip)(PORT=1523))(ADDRESS=(PROTOCOL=TCP)(HOST=aadalldbq201-vip)(PORT=1523))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=dblog.service.AALOGQS.aaqa)))"
-		username="DBLOG_QA12" validationInterval="30000" validationQuery="SELECT 1 FROM DUAL" />
-		
 </Context>
