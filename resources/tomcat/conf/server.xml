@@ -1,34 +1,24 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!--
-  ~ Copyright 2013-2016 the original author or authors.
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
-<Server port='-1'>
-
-    <Service name='Catalina'>
-        <Connector port='${http.port}' bindOnInit="false" connectionTimeout="20000"/>
-
-        <Engine defaultHost='localhost' name='Catalina'>
-            <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
-            <Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
-                   pattern='[ACCESS] %{org.apache.catalina.AccessLog.RemoteAddr}r %l %t %D %F %B %S vcap_request_id:%{X-Vcap-Request-Id}i'
-                   enabled="${access.logging.enabled}"/>
-            <Host name='localhost'>
-                <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
-            </Host>
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="${base.shutdown.port}" shutdown="SHUTDOWN">
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+    <!-- WWWCMT Listener className="com.springsource.tcserver.serviceability.deploy.TcContainerDeployer"/-->
+    <!-- WWWCMTListener accessFile="${catalina.base}/conf/jmxremote.access" address="127.0.0.1" authenticate="true" className="com.springsource.tcserver.serviceability.rmi.JmxSocketListener" passwordFile="${catalina.base}/conf/jmxremote.password" port="${base.jmx.port}" useSSL="false"/-->
+    <GlobalNamingResources>
+        <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+    </GlobalNamingResources>
+    <Service name="Catalina">
+        <Executor maxThreads="300" minSpareThreads="50" name="tomcatThreadPool" namePrefix="tomcat-http--"/>
+        <Engine defaultHost="localhost" name="Catalina">
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+                <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+            </Realm>
+            <Host appBase="webapps" autoDeploy="true" deployOnStartup="true" deployXML="true" name="localhost" unpackWARs="true">
+                <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
+            <Context docBase="mws_v26" path="/mws_v26" reloadable="true" source="org.eclipse.jst.jee.server:mws_v26"/></Host>
         </Engine>
+		<!-- WWWCMT Listener className="com.springsource.tcserver.properties.SystemProperties" file.1="${catalina.base}/conf/cs.environment.properties" immutable="false" trigger="now"/-->
+        <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="8081" protocol="org.apache.coyote.http11.Http11Protocol" redirectPort="${bio.https.port}"/>
     </Service>
-
 </Server>
