@@ -57,6 +57,6 @@
                   url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=cap-sg-prd-1.integration.ibmcloud.com)(PORT=15883))(ADDRESS=(PROTOCOL=TCP)(HOST=cap-sg-prd-1.integration.ibmcloud.com)(PORT=15817))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=dblog.service.AALOGQS.aaqa)))" 
                   username="DBLOG_QA12" 
                   validationInterval="30000" 
-                  validationQuery="SELECT 1 FROM DUAL"/>
-    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource -->
+                  validationQuery="SELECT 1 FROM DUAL"/ -->
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
 </Context>
