@@ -30,7 +30,7 @@
               <!-- 
                  <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
 				-->   
-				<Context docBase="mws_v26" path="/mws_v26" reloadable="true" source="org.eclipse.jst.jee.server:mws_v26"/>         
+				<!-- Context docBase="mws_v26" path="/mws_v26" reloadable="true" source="org.eclipse.jst.jee.server:mws_v26"/-->         
             </Host>
         </Engine>
                 
