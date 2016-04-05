@@ -15,20 +15,29 @@
   ~ limitations under the License.
   -->
 
-<Server port='-1'>
+<Server port="${base.shutdown.port}" shutdown="SHUTDOWN">
 
-    <Service name='Catalina'>
-        <Connector port='${http.port}' bindOnInit="false" connectionTimeout="20000"/>
 
-        <Engine defaultHost='localhost' name='Catalina'>
-            <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
-            <Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
+
+<Service name="Catalina">
+        <Executor maxThreads="300" minSpareThreads="50" name="tomcatThreadPool" namePrefix="tomcat-http--"/>
+        <Engine defaultHost="localhost" name="Catalina">
+             <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
+            <!-- Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
                    pattern='[ACCESS] %{org.apache.catalina.AccessLog.RemoteAddr}r %l %t %D %F %B %S vcap_request_id:%{X-Vcap-Request-Id}i'
-                   enabled="${access.logging.enabled}"/>
-            <Host name='localhost'>
-                <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
+                  enabled="${access.logging.enabled}"/-->
+            <Host autoDeploy="true" deployOnStartup="true" deployXML="true" name="localhost" unpackWARs="true">
+              <!-- 
+                 <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
+				-->   
+				<Context docBase="mws_v26" path="/mws_v26" reloadable="true" source="org.eclipse.jst.jee.server:mws_v26"/>         
             </Host>
         </Engine>
+                
+    
+		<!-- WWWCMT Listener className="com.springsource.tcserver.properties.SystemProperties" file.1="${catalina.base}/conf/cs.environment.properties" immutable="false" trigger="now"/-->
+        <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="8081" protocol="org.apache.coyote.http11.Http11Protocol" redirectPort="${bio.https.port}"/>
     </Service>
+
 
 </Server>
