@@ -15,29 +15,54 @@
   ~ limitations under the License.
   -->
 
-<Server port="${base.shutdown.port}" shutdown="SHUTDOWN">
+<Server port='-1'>
 
+    <Service name='Catalina'>
+        <Connector port='${http.port}' bindOnInit="false" connectionTimeout="20000"/>
 
-
-<Service name="Catalina">
-        <Executor maxThreads="300" minSpareThreads="50" name="tomcatThreadPool" namePrefix="tomcat-http--"/>
-        <Engine defaultHost="localhost" name="Catalina">
-             <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
-            <!-- Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
+        <Engine defaultHost='localhost' name='Catalina'>
+            <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
+            <Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
                    pattern='[ACCESS] %{org.apache.catalina.AccessLog.RemoteAddr}r %l %t %D %F %B %S vcap_request_id:%{X-Vcap-Request-Id}i'
-                  enabled="${access.logging.enabled}"/-->
-            <Host autoDeploy="true" deployOnStartup="true" deployXML="true" name="localhost" unpackWARs="true">
-              <!-- 
-                 <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
-				-->   
-				<!-- Context docBase="mws_v26" path="/mws_v26" reloadable="true" source="org.eclipse.jst.jee.server:mws_v26"/-->         
+                   enabled="${access.logging.enabled}"/>
+            <Host name='localhost'>
+                <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
             </Host>
         </Engine>
-                
-    
-		<!-- WWWCMT Listener className="com.springsource.tcserver.properties.SystemProperties" file.1="${catalina.base}/conf/cs.environment.properties" immutable="false" trigger="now"/-->
-        <Connector acceptCount="100" connectionTimeout="20000" executor="tomcatThreadPool" maxKeepAliveRequests="15" port="8081" protocol="org.apache.coyote.http11.Http11Protocol" redirectPort="${bio.https.port}"/>
     </Service>
 
+</Server>
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ Copyright 2013-2016 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<Server port='-1'>
+
+    <Service name='Catalina'>
+        <Connector port='${http.port}' bindOnInit="false" connectionTimeout="20000"/>
+
+        <Engine defaultHost='localhost' name='Catalina'>
+            <Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="x-forwarded-proto"/>
+            <Valve className="com.gopivotal.cloudfoundry.tomcat.logging.access.CloudFoundryAccessLoggingValve"
+                   pattern='[ACCESS] %{org.apache.catalina.AccessLog.RemoteAddr}r %l %t %D %F %B %S vcap_request_id:%{X-Vcap-Request-Id}i'
+                   enabled="${access.logging.enabled}"/>
+            <Host name='localhost'>
+                <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
+            </Host>
+        </Engine>
+    </Service>
 
 </Server>
