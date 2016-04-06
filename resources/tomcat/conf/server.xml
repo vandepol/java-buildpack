@@ -18,6 +18,7 @@
 <Server port='-1'>
 
     <Service name='Catalina'>
+    
         <Connector port='${http.port}' bindOnInit="false" connectionTimeout="20000"/>
 
         <Engine defaultHost='localhost' name='Catalina'>
@@ -26,8 +27,6 @@
                    pattern='[ACCESS] %{org.apache.catalina.AccessLog.RemoteAddr}r %l %t %D %F %B %S vcap_request_id:%{X-Vcap-Request-Id}i'
                    enabled="${access.logging.enabled}"/>
             <Host name='localhost'>
-            <Context path="/mws_v26" docBase="mws_v26" debug="0" reloadable="true"/>
- 			
                 <Listener className="com.gopivotal.cloudfoundry.tomcat.lifecycle.ApplicationStartupFailureDetectingLifecycleListener"/>
             </Host>
         </Engine>
